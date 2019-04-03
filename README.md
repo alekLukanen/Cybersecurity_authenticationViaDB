@@ -1,5 +1,10 @@
-# Application name here
+# Authenticate Using a DB
 Description of application goes here...
+
+## Helpful Links
+
+* https://docs.kali.org/general-use/kali-linux-sources-list-repositories
+* https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
 
 ## Build the Development Environment
 To create your python environment simply run
