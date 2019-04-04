@@ -8,10 +8,10 @@ HOST = 'http://127.0.0.1:8000'
 class Session(object):
 
     def __init__(self):
-        self.client_id = 'aMsyBZha5VjeXJbP4yeMHjLPWsfPIvQprQWIGG9N'
-        self.client_secret = 'cQ9tPD5CyMVM55c4CgeR1CgV2ygIlgq7V5CbJhMJRFU' \
-                        '5iUgA2CK5RtgjZayv2wXnw0G9bCY1Fy9OTQe9zATXF2n0Z' \
-                        'O67QQoo3G9nyOANJNeAMhJbNFWEnXNAfH797hoK'
+        self.client_id = 'V2jR2iLiDW3irsLwdAHzetFn5r93MIHmHBe6td6f'
+        self.client_secret = 'XXoFJQsagJSvYbWqyjZAHEoFj6WAjJ4ykGrN27K75' \
+                             '2HQlF51yJdFJWqGguo1OnuoqKugcWqyRY22vTi7eg' \
+                             'PhrUuHd4cNLEmUydaj3Qp5slOlBbNpro4QuvrTLHbtmyfz'
         self.json_header = 'Content-Type: application/json'
         self.token_url = 'http://127.0.0.1:8000/api/users/o/token/'
         self.access_token = 'none'
@@ -32,6 +32,7 @@ class Session(object):
                                               auth=(self.client_id, self.client_secret))
 
         data = json.loads(access_token_response.text)
+        print (data)
         self.access_token = data['access_token']
         self.refresh_token = data['refresh_token']
 
@@ -67,26 +68,8 @@ def get_users_profile(session):
     return pbody(response), response
 
 
-def get_user_post(session, post_id):
-    url = f'{HOST}/api/posts/post/'
-    response = get(session, url, params={'post': post_id})
-    return pbody(response), response
-
-
-def get_user_post_list(session, username):
-    url = f'{HOST}/api/posts/list/{username}/'
-    response = get(session, url)
-    return pbody(response), response
-
-
 def post_profile(session, data):
     url = f'{HOST}/api/users/myprofile/'
-    response = post(session, url, data=json.dumps(data))
-    return pbody(response), response
-
-
-def post_post(session, data):
-    url=f'{HOST}/api/posts/post/'
     response = post(session, url, data=json.dumps(data))
     return pbody(response), response
 
@@ -97,11 +80,11 @@ if __name__ == '__main__':
     # AUTHENTICATION AND SESSION
     ######################################
     username = 'bob'
-    password = 'pass'
+    password = 'passmass123'
     session = Session()
-    #session.get_credentials(username, password)
-    session.set_credentials('gsNFf7qppOpSFc6VGd3CPCQNHw2PTD'
-                            , 'njwF3S3xJ9Qubhxstbm5EawjSOPSI3')
+    session.get_credentials(username, password)
+    #session.set_credentials('gsNFf7qppOpSFc6VGd3CPCQNHw2PTD'
+    #                        , 'njwF3S3xJ9Qubhxstbm5EawjSOPSI3')
     print('access_token: ', session.access_token)
     print('refresh_token: ', session.refresh_token)
     print('--------------------------------------')
