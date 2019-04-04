@@ -1,6 +1,7 @@
 # Authenticate Using a DB
 Description of application goes here...
 
+
 ## Build the Development Environment
 To create your python environment simply run
 ```
@@ -23,12 +24,14 @@ and activated you can run the server using the following command
 python auth/manage.py runserver
 ```
 
+
 ## What Needs to Work
 
 * Login/Register page (index.html)
 * Profile page (profile.html)
 * Public key cryptography to encrypt username and password
 * Admin accounts
+
 
 ## Helpful Curl Commands
 
@@ -43,6 +46,9 @@ python auth/manage.py runserver
 
 * https://docs.kali.org/general-use/kali-linux-sources-list-repositories
 * https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
+* Encrypt and decrypt in python: https://stackoverflow.com/questions/21327491/using-pycrypto-how-to-import-a-rsa-public-key-and-use-it-to-encrypt-a-string
+* Encrypt and decrypt in javascript: https://medium.com/sharenowtech/high-speed-public-key-cryptography-in-javascript-part-1-3eefb6f91f77
+
 
 ---
 
