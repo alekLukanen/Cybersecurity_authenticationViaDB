@@ -17,6 +17,8 @@ from users.models import Profile
 from users.serializers import ProfileSerializer
 from users.serializers import UserSerializer
 
+import encryption.encryption as encryption
+
 
 class CreateUserView(CreateAPIView):
 
