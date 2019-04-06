@@ -41,10 +41,10 @@ class Session(object):
         server_key_data = req.get(self.public_key_url)
         data = pbody(server_key_data)
         print(data)
-        self.server_public_key = data['SERVER_KEY'] if 'SERVER_KEY' in data else 'no key in get request data'
+        self.server_public_key = RSA.importKey(data['SERVER_KEY']) if 'SERVER_KEY' in data else 'no key in get request data'
 
     def encrypt_json_data(self, json_data):
-        data = {'CLIENT_KEY': self.session_public_key(), 
+        data = {'CLIENT_KEY': self.session_public_key().exportKey('PEM'), 
                 'data': encryption.encrypt(json.dumps(json_data), self.server_public_key)}
         return data
 
@@ -70,19 +70,38 @@ class Session(object):
         # step A, B - single call with client credentials as the basic auth header - will return access_token
         data = {'grant_type': 'password',
                 'username': username,
-                'password': password}
-        access_token_response = req.post(self.token_url, data=data,
+                'password': password
+                }
+
+        new_data = {'CLIENT_KEY': self.session_public_key().exportKey('PEM'),
+                    'data': encryption.encrypt(json.dumps(data).encode(), self.server_public_key).decode()
+                    }
+
+        access_token_response = req.post(self.token_url, data=new_data,
                                               verify=False, allow_redirects=False,
                                               auth=(self.client_id, self.client_secret))
 
         data = json.loads(access_token_response.text)
         print (data)
+        #data['data'] = self.decrypt_json_data(data)
         self.access_token = data['access_token']
         self.refresh_token = data['refresh_token']
 
     def set_credentials(self, access_token, refresh_token):
         self.access_token = access_token
         self.refresh_token = refresh_token
+
+    def get(self, session, url, params={}):
+        params['CLIENT_KEY'] = self.session_public_key().exportKey('PEM')
+        response = req.get(url, headers=session.append_oauth_header({}), params=params)
+        return response
+
+    def post(self, session, url, data={}):
+        headers = {'Content-Type': 'application/json'}
+        headers = session.append_oauth_header(headers)
+        response = req.post(url, headers=headers, data=data)
+        print(response.status_code)
+        return response
 
 
 def pbody(response):
@@ -93,23 +112,9 @@ def pbody(response):
                          "because there wasn't a valid request"}
 
 
-def get(session, url, params={}):
-    params['CLIENT_KEY'] = session.session_public_key().exportKey('PEM')
-    response = req.get(url, headers=session.append_oauth_header({}), params=params)
-    return response
-
-
-def post(session, url, data={}):
-    headers = {'Content-Type': 'application/json'}
-    headers = session.append_oauth_header(headers)
-    response = req.post(url, headers=headers, data=data)
-    print(response.status_code)
-    return response
-
-
 def get_users_profile(session):
     url = f'{HOST}/api/users/myprofile/'
-    response = get(session, url)
+    response = session.get(session, url)
     json_data = pbody(response)
     session.decrypt_json_data(json_data)
     return json_data['data'], response
@@ -117,7 +122,7 @@ def get_users_profile(session):
 
 def post_profile(session, data):
     url = f'{HOST}/api/users/myprofile/'
-    response = post(session, url, data=json.dumps(data))
+    response = session.post(session, url, data=json.dumps(data))
     return pbody(response), response
 
 

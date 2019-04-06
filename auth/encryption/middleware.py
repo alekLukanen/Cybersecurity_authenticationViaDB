@@ -40,6 +40,22 @@ class EncryptionMiddleware(object):
         print('-* process_post_request()')
         if request.path not in self.get_request_excluded_paths:
             print('- processing...')
+            if (request.META["CONTENT_TYPE"]=='application/x-www-form-urlencoded'):
+                print('- processing the request content (is x-www-form-urlencoded)')
+                print('- request.POST["CLIENT_KEY"]: ', request.POST['CLIENT_KEY'])
+                print('- request.POST["data"]: ', request.POST['data'])
+                request.POST = request.POST.copy()
+                new_data = json.loads( encryption.decrypt(request.POST['data'].encode(), encryption.server_key_pair()).decode() )
+                request.POST['grant_type'] = new_data['grant_type']
+                request.POST['username'] = new_data['username']
+                request.POST['password'] = new_data['password']
+
+            elif (request.META["CONTENT_TYPE"]=='application/json'):
+                 print('- processing the request content (is json)')
+
+            else:
+                print('- did not process the request (not json)')
+
         else:
             print('- this is an excluded path (will not be decrypted')
 

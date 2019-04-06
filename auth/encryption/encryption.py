@@ -55,8 +55,10 @@ def encrypt_and_decrypt(message, key):
 
     b64_message = base64.b64encode(ciphertext)
     print('b64_message: ', b64_message)
-    b64_latin_message = b64_message.decode()
-    b64_message2 = b64_latin_message.encode()
+    b64_decoded_message = b64_message.decode()
+    print('b64_decoded_message: ', b64_decoded_message)
+    b64_message2 = b64_decoded_message.encode()
+    print('b64_message2: ', b64_message2)
     ciphertext2 = base64.b64decode(b64_message2)
     print('ciphertext2: ', ciphertext2)
 
