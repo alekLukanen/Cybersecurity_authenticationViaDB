@@ -1,6 +1,8 @@
 import json
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
+import os
+import base64
 
 PUBLIC_FILE_NAME = 'public.pem'
 PAIR_FILE_NAME = 'pair.pem'
@@ -22,27 +24,43 @@ def read_key(file_name):
         return RSA.importKey(key_file.read())
 
 
+def server_public_key():
+    return RSA.importKey(open(os.path.dirname(os.path.abspath(__file__))+'/public.pem', 'r').read())
+
+
+def server_key_pair():
+    return RSA.importKey(open(os.path.dirname(os.path.abspath(__file__))+'/pair.pem', 'r').read())
+
+
 def encrypt_and_decrypt_server(message, file_name=PAIR_FILE_NAME):
     return encrypt_and_decrypt(message, RSA.importKey(open(file_name, 'r').read()))
 
 
 def decrypt(message, key):
     cipher = PKCS1_OAEP.new(key)
-    decrypted_message = cipher.decrypt(message)
+    decrypted_message = cipher.decrypt(base64.b64decode(message))
     return decrypted_message
 
 
 def encrypt(message, key):
     cipher = PKCS1_OAEP.new(key)
     encrypted_message = cipher.encrypt(message)
-    return encrypted_message
+    return base64.b64encode(encrypted_message)
 
 
 def encrypt_and_decrypt(message, key):
     #key = RSA.generate(2048)
     cipher = PKCS1_OAEP.new(key)
     ciphertext = cipher.encrypt(message)
-    decryptedtext = cipher.decrypt(ciphertext)
+
+    b64_message = base64.b64encode(ciphertext)
+    print('b64_message: ', b64_message)
+    b64_latin_message = b64_message.decode()
+    b64_message2 = b64_latin_message.encode()
+    ciphertext2 = base64.b64decode(b64_message2)
+    print('ciphertext2: ', ciphertext2)
+
+    decryptedtext = cipher.decrypt(ciphertext2)
 
     print('-------------------------------')
     print('message: ', message)
@@ -55,7 +73,9 @@ def encrypt_and_decrypt(message, key):
 
 if __name__ == '__main__':
     print('* generate a new public key pair')
-    generate_new_public_key_pair()
+    #generate_new_public_key_pair()
         
-    print('* encrypt and decrypt a message')
-    encrypt_and_decrypt_server(b'Hello python!')
+    encrypt_and_decrypt(b'hello world!', RSA.generate(2048))
+
+    #print('* encrypt and decrypt a message')
+    #encrypt_and_decrypt_server(b'{"SERVER_KEY": "hello there key"}')

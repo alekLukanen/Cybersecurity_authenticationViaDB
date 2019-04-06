@@ -3,37 +3,17 @@ import os
 from django.http import HttpResponse
 from Crypto.PublicKey import RSA
 
-import encryption
+import encryption.encryption as encryption
 
 class EncryptionMiddleware(object):
 
     def __init__(self, arg1):
         print('arg1: ', arg1)
         self.get_response = arg1
-        self.get_request_excluded_paths = [] #['/api/encryption/public-key',]
-        self.get_response_excluded_paths = []
+        self.get_request_excluded_paths = []
+        self.get_response_excluded_paths = ['/api/encryption/public-key',]
         self.post_request_excluded_paths = []
         self.post_response_excluded_paths = []
-
-    def unencrypt_request_data(self, request):
-        print('* unencrypt_request_data()')
-        json_data = json.loads(request.body)
-        key =  open(os.path.dirname(os.path.abspath(__file__))+'/pair.pem', 'r').read()
-        print('- json_data: ', json_data)
-        return encryption.decrypt(json_data['data'], key) if 'data' in json_data else "{}"
-
-    def encrypt_response_data(self, request, response):
-        print('* encrypt_response_data()')
-        print('- request.body: ', request.body)
-        request_data = json.loads(request.body)
-
-        if ('CLIENT_KEY' in request_data):
-            json_data = json.loads(response.content)
-            new_data = {'SERVER_KEY': key_string,
-                        'data': encryption.encrypt(response.content, request_data['CLIENT_KEY'])}
-            return json.dumps(new_data)
-        else:
-            return "{}"
 
     def process_get_request(self, request):
         print('-* process_get_request()')
@@ -45,7 +25,14 @@ class EncryptionMiddleware(object):
     def process_get_response(self, request, response):
         print('-* process_get_response()')
         if request.path not in self.get_response_excluded_paths:
-            print('- processing...')
+            if (response["Content-Type"]=='application/json'):
+                print('- processing the response content (is json)')
+                print('- server key pair: ', encryption.server_key_pair())
+                new_data = {'SERVER_KEY': encryption.server_public_key().exportKey('PEM').decode(),
+                            'data': encryption.encrypt(response.content, RSA.importKey(request.GET['CLIENT_KEY'])).decode()} #.decode('latin-1') #encryption.server_key_pair()
+                response.content = json.dumps(new_data)
+            else:
+                print('- did not process the response (not json)')
         else:
             print('- this is an excluded path (will not be decrypted')
     
@@ -59,7 +46,7 @@ class EncryptionMiddleware(object):
     def process_post_response(self, request, response):
         print('-* process_post_response()')
         if request.path not in self.post_response_excluded_paths:
-            print('- processing...')
+            print('processing...')
         else:
             print('- this is an excluded path (will not be decrypted')
 
@@ -85,6 +72,7 @@ class EncryptionMiddleware(object):
 
         response = self.get_response(request)
         print('- response["Content-Type"]: ', response["Content-Type"])
+        print('- response.content: ', response.content)
 
         # process responses
         if (request.method=='GET'):

@@ -52,8 +52,10 @@ class Session(object):
         """
         json_data must have 'data' in it
         """
+        print('- original data (encrypted): ')
+        print('- json_data: ', json_data)
         if 'data' in json_data:
-            json_data['data'] = json.loads(encryption.decrypt(json_data['data'], self.session_key_pair))
+            json_data['data'] = json.loads( encryption.decrypt(json_data['data'].encode(), self.session_key_pair).decode() )
             return json_data
         else:
             print('- it appears as though your json data did not contain a "data" key')
@@ -110,7 +112,7 @@ def get_users_profile(session):
     response = get(session, url)
     json_data = pbody(response)
     session.decrypt_json_data(json_data)
-    return pbody(response), response
+    return json_data['data'], response
 
 
 def post_profile(session, data):
@@ -138,6 +140,7 @@ if __name__ == '__main__':
     ######################################
     print("-| The user's profile")
     profile, _ = get_users_profile(session)
+    print('- decrypted profile data: ')
     pr.pprint(profile, indent=5)
     print("")
 

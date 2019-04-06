@@ -51,7 +51,6 @@ python auth/manage.py runserver
 * https://pycryptodome.readthedocs.io/en/latest/src/cipher/oaep.html
 * Encrypt and decrypt in javascript: https://medium.com/sharenowtech/high-speed-public-key-cryptography-in-javascript-part-1-3eefb6f91f77
 * RSA encrypt with PKCS1-V1_5 (JavaScript): https://stackoverflow.com/questions/46467740/rsa-encrypt-with-pkcs1-v1-5-javascript
-* 
 
 ---
 
