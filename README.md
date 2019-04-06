@@ -53,6 +53,8 @@ python auth/manage.py runserver
 * RSA encrypt with PKCS1-V1_5 (JavaScript): https://stackoverflow.com/questions/46467740/rsa-encrypt-with-pkcs1-v1-5-javascript
 * Python and Javascript encryption: https://medium.com/@DannyAziz97/rsa-encryption-with-js-python-7e031cbb66bb
 * HTTPS in Django: http://www.marinamele.com/2014/09/security-on-django-app-https-everywhere.html
+* Stack article on Django HTTPS: https://stackoverflow.com/questions/8023126/how-can-i-test-https-connections-with-django-as-easily-as-i-can-non-https-connec
+* Django sslserver package: https://github.com/teddziuba/django-sslserver
 
 ---
 

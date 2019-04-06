@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'oauth2_provider',
+    'sslserver',
     # ------ my apps ------
     'users.apps.UsersConfig',
     'encryption.apps.EncryptionConfig'
@@ -52,7 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'encryption.middleware.EncryptionMiddleware'
+    # ------ my middleware ------
+    #'encryption.middleware.EncryptionMiddleware'
 ]
 
 ROOT_URLCONF = 'auth.urls'
