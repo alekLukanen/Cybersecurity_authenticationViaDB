@@ -62,7 +62,26 @@ class EncryptionMiddleware(object):
     def process_post_response(self, request, response):
         print('-* process_post_response()')
         if request.path not in self.post_response_excluded_paths:
-            print('processing...')
+            if (response["Content-Type"]=='application/json'):
+                print('- processing the response content (is json)')
+
+                if (request.META["CONTENT_TYPE"]=='application/x-www-form-urlencoded'):
+                    print('-- request of x-www-form-urlencoded')
+                    client_key = RSA.importKey( request.POST['CLIENT_KEY'] )
+                    encrypted_data = encryption.encrypt(response.content, client_key).decode()
+                    new_data = {'SERVER_KEY': encryption.server_public_key().exportKey('PEM').decode(),
+                                'data': encrypted_data}
+                    print(new_data)
+                    response.content = json.dumps( new_data ).encode()
+
+                elif (request.META["CONTENT_TYPE"]=='application/json'):
+                    print('-- request of json')
+
+                else:
+                    print('- did not process the response')
+                
+            else:
+                print('- did not process the response (not json)')
         else:
             print('- this is an excluded path (will not be decrypted')
 

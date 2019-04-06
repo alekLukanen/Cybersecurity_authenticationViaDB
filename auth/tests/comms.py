@@ -83,7 +83,8 @@ class Session(object):
 
         data = json.loads(access_token_response.text)
         print (data)
-        #data['data'] = self.decrypt_json_data(data)
+        self.decrypt_json_data(data)
+        data = data['data']
         self.access_token = data['access_token']
         self.refresh_token = data['refresh_token']
 
