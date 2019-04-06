@@ -1,4 +1,3 @@
-
 import sys
 sys.path.append('../')
 
@@ -42,6 +41,7 @@ class Session(object):
         data = pbody(server_key_data)
         print(data)
         self.server_public_key = RSA.importKey(data['SERVER_KEY']) if 'SERVER_KEY' in data else 'no key in get request data'
+        print('--------------------------------------')
 
     def encrypt_json_data(self, json_data):
         data = {'CLIENT_KEY': self.session_public_key().exportKey('PEM'), 
@@ -82,11 +82,14 @@ class Session(object):
                                               auth=(self.client_id, self.client_secret))
 
         data = json.loads(access_token_response.text)
-        print (data)
         self.decrypt_json_data(data)
+        print('- decrypted token data: ')
+        print(data)
         data = data['data']
         self.access_token = data['access_token']
         self.refresh_token = data['refresh_token']
+        print('--------------------------------------')
+
 
     def set_credentials(self, access_token, refresh_token):
         self.access_token = access_token
