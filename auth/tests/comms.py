@@ -1,6 +1,15 @@
-import requests as req
+
+import sys
+sys.path.append('../')
+
 import json
 import pprint as pr
+import requests as req
+
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.PublicKey import RSA
+
+import encryption.encryption as encryption
 
 HOST = 'http://127.0.0.1:8000'
 
@@ -8,14 +17,47 @@ HOST = 'http://127.0.0.1:8000'
 class Session(object):
 
     def __init__(self):
+        self.public_key_size = 2048
+
         self.client_id = 'V2jR2iLiDW3irsLwdAHzetFn5r93MIHmHBe6td6f'
         self.client_secret = 'XXoFJQsagJSvYbWqyjZAHEoFj6WAjJ4ykGrN27K75' \
                              '2HQlF51yJdFJWqGguo1OnuoqKugcWqyRY22vTi7eg' \
                              'PhrUuHd4cNLEmUydaj3Qp5slOlBbNpro4QuvrTLHbtmyfz'
         self.json_header = 'Content-Type: application/json'
         self.token_url = 'http://127.0.0.1:8000/api/users/o/token/'
+        self.public_key_url = 'http://127.0.0.1:8000/api/encryption/public-key'
         self.access_token = 'none'
         self.refresh_token = 'none'
+        self.server_public_key = 'none'
+        self.session_key_pair = RSA.generate(self.public_key_size)
+
+        # setup method calls here
+        self.get_server_public_key()
+        
+    def session_public_key(self):
+        return self.session_key_pair.publickey()
+
+    def get_server_public_key(self):
+        server_key_data = req.get(self.public_key_url)
+        data = pbody(server_key_data)
+        print(data)
+        self.server_public_key = data['SERVER_KEY'] if 'SERVER_KEY' in data else 'no key in get request data'
+
+    def encrypt_json_data(self, json_data):
+        data = {'CLIENT_KEY': self.session_public_key(), 
+                'data': encryption.encrypt(json.dumps(json_data), self.server_public_key)}
+        return data
+
+    def decrypt_json_data(self, json_data):
+        """
+        json_data must have 'data' in it
+        """
+        if 'data' in json_data:
+            json_data['data'] = json.loads(encryption.decrypt(json_data['data'], self.session_key_pair))
+            return json_data
+        else:
+            print('- it appears as though your json data did not contain a "data" key')
+            return json_data
 
     def append_oauth_header(self, headers):
         auth_header = {'Authorization': 'Bearer ' + self.access_token}
@@ -50,6 +92,7 @@ def pbody(response):
 
 
 def get(session, url, params={}):
+    params['CLIENT_KEY'] = session.session_public_key().exportKey('PEM')
     response = req.get(url, headers=session.append_oauth_header({}), params=params)
     return response
 
@@ -65,6 +108,8 @@ def post(session, url, data={}):
 def get_users_profile(session):
     url = f'{HOST}/api/users/myprofile/'
     response = get(session, url)
+    json_data = pbody(response)
+    session.decrypt_json_data(json_data)
     return pbody(response), response
 
 
@@ -96,10 +141,10 @@ if __name__ == '__main__':
     pr.pprint(profile, indent=5)
     print("")
 
-    print("-| Updated the users profile")
-    profile = {"bio": "hello there again...",
-               "firstName": "bobby123",
-               "lastName": "mobby123"}
-    updated_profile, _ = post_profile(session, profile)
-    pr.pprint(updated_profile, indent=5)
-    print("")
+    #print("-| Updated the users profile")
+    #profile = {"bio": "hello there again...",
+    #           "firstName": "bobby123",
+    #           "lastName": "mobby123adlkfja"}
+    #updated_profile, _ = post_profile(session, profile)
+    #pr.pprint(updated_profile, indent=5)
+    #print("")
