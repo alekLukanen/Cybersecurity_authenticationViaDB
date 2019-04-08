@@ -31,7 +31,7 @@ class Session(object):
         self.session_key_pair = RSA.generate(self.public_key_size)
 
         # setup method calls here
-        self.get_server_public_key()
+        # self.get_server_public_key()
         
     def session_public_key(self):
         return self.session_key_pair.publickey()
@@ -73,19 +73,20 @@ class Session(object):
                 'password': password
                 }
 
-        new_data = {'CLIENT_KEY': self.session_public_key().exportKey('PEM'),
-                    'data': encryption.encrypt(json.dumps(data).encode(), self.server_public_key).decode()
-                    }
+        #new_data = {'CLIENT_KEY': self.session_public_key().exportKey('PEM'),
+        #            'data': encryption.encrypt(json.dumps(data).encode(), self.server_public_key).decode()
+        #            }
+        new_data = data
 
         access_token_response = req.post(self.token_url, data=new_data,
                                               verify=False, allow_redirects=False,
                                               auth=(self.client_id, self.client_secret))
 
         data = json.loads(access_token_response.text)
-        self.decrypt_json_data(data)
-        print('- decrypted token data: ')
+        #self.decrypt_json_data(data)
+        #print('- decrypted token data: ')
         print(data)
-        data = data['data']
+        #data = data['data']
         self.access_token = data['access_token']
         self.refresh_token = data['refresh_token']
         print('--------------------------------------')
@@ -96,7 +97,7 @@ class Session(object):
         self.refresh_token = refresh_token
 
     def get(self, session, url, params={}):
-        params['CLIENT_KEY'] = self.session_public_key().exportKey('PEM')
+        #params['CLIENT_KEY'] = self.session_public_key().exportKey('PEM')
         response = req.get(url, headers=session.append_oauth_header({}), params=params)
         return response
 
@@ -120,8 +121,8 @@ def get_users_profile(session):
     url = f'{HOST}/api/users/myprofile/'
     response = session.get(session, url)
     json_data = pbody(response)
-    session.decrypt_json_data(json_data)
-    return json_data['data'], response
+    #session.decrypt_json_data(json_data)
+    return json_data, response #json_data['data'], response
 
 
 def post_profile(session, data):
@@ -149,7 +150,7 @@ if __name__ == '__main__':
     ######################################
     print("-| The user's profile")
     profile, _ = get_users_profile(session)
-    print('- decrypted profile data: ')
+    #print('- decrypted profile data: ')
     pr.pprint(profile, indent=5)
     print("")
 
