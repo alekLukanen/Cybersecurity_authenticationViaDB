@@ -128,6 +128,18 @@ def post_profile(session, data):
     return pbody(response), response
 
 
+def get_site_settings_list(session):
+    url = f'{HOST}/api/site/settings/'
+    response = session.get(session, url)
+    return pbody(response), response
+
+
+def create_site_setting(session, data):
+    url = f'{HOST}/api/site/settings/'
+    response = session.post(session, url, data=json.dumps(data))
+    return pbody(response), response
+
+
 if __name__ == '__main__':
     print(HOST)
 
@@ -142,6 +154,21 @@ if __name__ == '__main__':
     print('access_token: ', session.access_token)
     print('refresh_token: ', session.refresh_token)
     print('--------------------------------------')
+
+    # SITE SETTINGS
+    ######################################
+    print('-| Add a new site setting')
+    data = {'parameter': 'color',
+            'value': 'green',
+            'optional_extra': 'hello, world'}
+    new_setting, _ = create_site_setting(session, data)
+    pr.pprint(new_setting, indent=5)
+    print("")
+
+    print("-| The site's settings list")
+    settings, _ = get_site_settings_list(session)
+    pr.pprint(settings, indent=5)
+    print("")
 
     # PROFILE
     ######################################

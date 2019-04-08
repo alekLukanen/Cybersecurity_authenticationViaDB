@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'sslserver',
     # ------ my apps ------
     'users.apps.UsersConfig',
-    'encryption.apps.EncryptionConfig'
+    'siteSettings.apps.SitesettingsConfig'
+    #'encryption.apps.EncryptionConfig'
 ]
 
 MIDDLEWARE = [
