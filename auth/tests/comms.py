@@ -16,19 +16,16 @@ HOST = 'http://127.0.0.1:8000'
 class Session(object):
 
     def __init__(self):
-        self.public_key_size = 2048
-
         self.client_id = 'V2jR2iLiDW3irsLwdAHzetFn5r93MIHmHBe6td6f'
-        self.client_secret = 'XXoFJQsagJSvYbWqyjZAHEoFj6WAjJ4ykGrN27K75' \
-                             '2HQlF51yJdFJWqGguo1OnuoqKugcWqyRY22vTi7eg' \
-                             'PhrUuHd4cNLEmUydaj3Qp5slOlBbNpro4QuvrTLHbtmyfz'
+        self.client_secret = 'XXoFJQsagJSvYbWqyjZAHEoFj6WAjJ4ykGrN27K752HQlF51yJdFJWqGguo1OnuoqKugcWqyRY22vTi7egPhrUuHd4cNLEmUydaj3Qp5slOlBbNpro4QuvrTLHbtmyfz'
         self.json_header = 'Content-Type: application/json'
         self.token_url = 'http://127.0.0.1:8000/api/users/o/token/'
         self.public_key_url = 'http://127.0.0.1:8000/api/encryption/public-key'
         self.access_token = 'none'
         self.refresh_token = 'none'
-        self.server_public_key = 'none'
-        self.session_key_pair = RSA.generate(self.public_key_size)
+        #self.public_key_size = 2048
+        #self.server_public_key = 'none'
+        #self.session_key_pair = RSA.generate(self.public_key_size)
 
         # setup method calls here
         # self.get_server_public_key()
@@ -154,10 +151,10 @@ if __name__ == '__main__':
     pr.pprint(profile, indent=5)
     print("")
 
-    #print("-| Updated the users profile")
-    #profile = {"bio": "hello there again...",
-    #           "firstName": "bobby123",
-    #           "lastName": "mobby123adlkfja"}
-    #updated_profile, _ = post_profile(session, profile)
-    #pr.pprint(updated_profile, indent=5)
-    #print("")
+    print("-| Updated the users profile")
+    profile = {"bio": "hello there again...",
+               "firstName": "bobby123",
+               "lastName": "mobby123adlkfja"}
+    updated_profile, _ = post_profile(session, profile)
+    pr.pprint(updated_profile, indent=5)
+    print("")
