@@ -63,7 +63,27 @@ function postRequest(username, password){
 
 
 
-// var Session = __class__ ('Session', [Object], {
-//     get __init__ () {return __get__ (this, function (self, token_url) {
-//       self.token_url = token_url;});
-//     }});
+
+$.ajax({
+  asynch: false,
+  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/encryption/public-key" + username,
+  method: "GET",
+  headers: { "Accept": "application/json; odata=verbose"},
+  success: function (data) {
+
+    for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
+      
+      if (data.d.UserProfileProperties.results[i].key === "FirstName") { firstName = data.d.UserProfileProperties.results[i].Value;}
+      if (data.d.UserProfileProperties.results[i].key === "LastName") { lastName = data.d.UserProfileProperties.results[i].Value;}
+      if (data.d.UserProfileProperties.results[i].key === "Email") { email = data.d.UserProfileProperties.results[i].Value;}
+
+    }
+
+
+  },
+
+  error: function(x, y, z){
+    alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
+  }  
+
+});
