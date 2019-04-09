@@ -110,6 +110,7 @@ def pbody(response):
     if response.status_code < 400:
         return json.loads(response.text)
     else:
+        print(f'response.text (status code: {response.status_code}): {response.text}')
         return {'error': "could not parse message "
                          "because there wasn't a valid request"}
 
