@@ -66,9 +66,9 @@ function postRequest(username, password){
 
 $.ajax({
   asynch: false,
-  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/encryption/public-key" + username,
+  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
   method: "GET",
-  headers: { "Accept": "application/json; odata=verbose"},
+  headers: { "Athurization": "Bearer ACCESS_TOKEN"},
   success: function (data) {
 
     for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
@@ -78,12 +78,40 @@ $.ajax({
       if (data.d.UserProfileProperties.results[i].key === "Email") { email = data.d.UserProfileProperties.results[i].Value;}
 
     }
-
-
   },
+  dataType: 'JSON',
+  data: JSON.stringify(application.JSON),
 
-  error: function(x, y, z){
+  error: function(x, y, z){ 
     alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
   }  
 
 });
+
+$.ajax({
+  asynch: false,
+  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
+  method: "POST",
+  headers: { "Athurization": "Bearer ACCESS_TOKEN"},
+  success: function (data) {
+
+    for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
+      
+      if (data.d.UserProfileProperties.results[i].key === "FirstName") { firstName = data.d.UserProfileProperties.results[i].Value;}
+      if (data.d.UserProfileProperties.results[i].key === "LastName") { lastName = data.d.UserProfileProperties.results[i].Value;}
+      if (data.d.UserProfileProperties.results[i].key === "Email") { email = data.d.UserProfileProperties.results[i].Value;}
+
+    }
+  },
+  dataType: 'JSON',
+  data: JSON.stringify(application.JSON),
+  data: JSON.stringify(application.JSON),
+
+  error: function(x, y, z){ 
+    alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
+  }  
+
+});
+
+
+
