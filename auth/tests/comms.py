@@ -3,7 +3,7 @@ sys.path.append('../')
 
 import json
 import pprint as pr
-import requests as req
+import postRequest as req
 
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     # AUTHENTICATION AND SESSION
     ######################################
-    username = 'bob@mail.com'
+    username = 'bob'
     password = 'passmass123'
     session = Session()
     session.get_credentials(username, password)
