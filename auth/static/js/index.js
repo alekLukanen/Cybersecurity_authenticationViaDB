@@ -43,7 +43,7 @@ $('.tab a').on('click', function (e) {
 });
 
 
-function postRequest(username, password){
+export function postRequest(username, password){
   var xhr = new XMLHttpRequest();
   
   xhr.open("POST", token_url, true);
@@ -104,8 +104,9 @@ $.ajax({
     }
   },
   dataType: 'JSON',
-  data: JSON.stringify(application.JSON),
-  data: JSON.stringify(application.JSON),
+  data: {json:JSON.stringify(application.JSON)},
+  parsed_data: JSON.parse(data),
+
 
   error: function(x, y, z){ 
     alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
@@ -113,5 +114,7 @@ $.ajax({
 
 });
 
-
+module.exports = {
+	postRequest: postRequest
+};
 

@@ -1,9 +1,11 @@
 import sys
 sys.path.append('../')
 
+import js2py
+
 import json
 import pprint as pr
-import requests as req
+from exports import postRequest as req 
 
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
