@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     # AUTHENTICATION AND SESSION
     ######################################
-    username = 'bob'
+    username = 'admin'
     password = 'passmass123'
     session = Session()
     session.get_credentials(username, password)
