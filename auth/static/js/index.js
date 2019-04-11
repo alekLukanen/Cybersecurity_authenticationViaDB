@@ -45,7 +45,7 @@ $('.tab a').on('click', function (e) {
 
 export function postRequest(username, password){
   var xhr = new XMLHttpRequest();
-  
+
   xhr.open("POST", token_url, true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
   xhr.setRequestHeader('Accept', 'application/JSON');
@@ -68,7 +68,7 @@ $.ajax({
   asynch: false,
   url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
   method: "GET",
-  headers: { "Athurization": "Bearer ACCESS_TOKEN"},
+  headers: { "Athurization": "postRequest()"},
   success: function (data) {
 
     for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
@@ -106,7 +106,11 @@ $.ajax({
   dataType: 'JSON',
   data: {json:JSON.stringify(application.JSON)},
   parsed_data: JSON.parse(data),
+<<<<<<< HEAD
 
+=======
+  // console.log(parsed_data.success),
+>>>>>>> 765347546d8b35726009924a344033d9ea7d84f8
 
   error: function(x, y, z){ 
     alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));

@@ -1,5 +1,12 @@
 # Authenticate Using a DB
-Description of application goes here...
+Here is a simple project that setups a database with a few
+users and allows a client to interact with the database with
+a web interface. There is a login page and a profile page.
+
+Links (http or https):
+
+* http://127.0.0.1:8000/content/index.html
+* http://127.0.0.1:8000/content/profile.html
 
 
 ## Build the Development Environment
@@ -22,6 +29,11 @@ Now that you have your virtual environment installed
 and activated you can run the server using the following command
 ```
 python auth/manage.py runserver
+```
+Or you can use the following command to run the server in 
+https mode
+```
+python auth/manage.py runsslserver
 ```
 
 

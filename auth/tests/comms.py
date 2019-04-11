@@ -5,7 +5,11 @@ import js2py
 
 import json
 import pprint as pr
+<<<<<<< HEAD
 from exports import postRequest as req 
+=======
+import postRequest as req
+>>>>>>> 765347546d8b35726009924a344033d9ea7d84f8
 
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
@@ -148,7 +152,7 @@ if __name__ == '__main__':
 
     # AUTHENTICATION AND SESSION
     ######################################
-    username = 'bob@mail.com'
+    username = 'bob'
     password = 'passmass123'
     session = Session()
     session.get_credentials(username, password)
