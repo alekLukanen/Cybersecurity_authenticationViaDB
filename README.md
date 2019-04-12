@@ -1,7 +1,8 @@
 # Authenticate Using a DB
-Here is a simple project that setups a database with a few
-users and allows a client to interact with the database with
-a web interface. There is a login page and a profile page.
+A simple project that setups a database with a few
+users and allows a client to interact with the database using
+a web interface. There is a login page and a profile page. Tokens
+are stored as cookies in the browser.
 
 ## Build the Development Environment
 To create your python environment simply run
@@ -31,7 +32,6 @@ python auth/manage.py runsslserver
 ```
 
 ## How to Login
-
 Go to the `index.html` page in either http or https mode and
 login with eihter of the following logins. You will then be redirected
 to the user's profile page. The profile page will change based on is 
@@ -39,8 +39,8 @@ staff.
 
 | Username | Password | Is Staff |
 |---        |---        |---        |
-| bob   | passmass123   | false |
-| admin  | passmass123  | true |
+| bob   | passmass123   | False |
+| admin  | passmass123  | True |
 
 HTTP Links:
 
