@@ -171,3 +171,30 @@ textarea {
   margin-top: -20px;
   text-align: right;
 }
+
+/* Global */
+.container{
+  width:80%; /* This way this adapts to the web page being changed*/
+  margin: auto;
+  overflow: hidden;
+}
+
+article#main-col{
+  float:left;
+  width:65%;
+  padding:25px;
+  color: #ffffff
+
+}
+
+.border{
+  padding: 15px;
+  background:#1f2833;
+  color:#ffffff;
+  margin-top:10px;
+  margin-bottom:10px;
+  border-top: #d9b08c 8px solid;
+  border-left: #ffcb9a 8px solid;
+  border-right: #ffcb9a 8px solid;
+  border-bottom: #d9b08c 8px solid;
+}

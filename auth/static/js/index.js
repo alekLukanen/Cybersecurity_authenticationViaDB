@@ -42,6 +42,7 @@ $('.tab a').on('click', function (e) {
   
 });
 
+////////////////////////////////////////////////////////////
 
 export function postRequest(username, password){
   var xhr = new XMLHttpRequest();
@@ -59,16 +60,17 @@ export function postRequest(username, password){
        console.log(data);
     }
   }
+
 }
 
-
+////////////////////////////////////////////////////////////
 
 
 $.ajax({
   asynch: false,
   url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
   method: "GET",
-  headers: { "Athurization": "postRequest()"},
+  headers: { "Athurization": ""},
   success: function (data) {
 
     for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
@@ -79,6 +81,7 @@ $.ajax({
 
     }
   },
+
   dataType: 'JSON',
   data: JSON.stringify(application.JSON),
 
@@ -92,7 +95,7 @@ $.ajax({
   asynch: false,
   url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
   method: "POST",
-  headers: { "Athurization": "Bearer ACCESS_TOKEN"},
+  headers: { "Athurization": "postRequest()"}, 
   success: function (data) {
 
     for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
@@ -106,19 +109,58 @@ $.ajax({
   dataType: 'JSON',
   data: {json:JSON.stringify(application.JSON)},
   parsed_data: JSON.parse(data),
-<<<<<<< HEAD
 
-=======
-  // console.log(parsed_data.success),
->>>>>>> 765347546d8b35726009924a344033d9ea7d84f8
+  cookie: setCookie("access_data", data["access_token"],1),
+  cookie: setCookie("refresh_data", data["refresh_token"],1),
 
   error: function(x, y, z){ 
     alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
   }  
 
 });
+ 
+////////////////////////////////////////////////////////////
 
-module.exports = {
-	postRequest: postRequest
-};
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+function doesCookieExist(cookieName){
+  str = getCookie(cookieName);
+  if (str.length>0){
+      return true;
+  }else{
+      return false;
+  }
+}
+
+/////////////////////////////////////////////////////////////
+
+function ifAdmin(admin_status){
+
+    if(admin_status == true){
+      print
+
+    };
+
+}
