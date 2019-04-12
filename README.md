@@ -67,6 +67,7 @@ python auth/manage.py runsslserver
 * HTTPS in Django: http://www.marinamele.com/2014/09/security-on-django-app-https-everywhere.html
 * Stack article on Django HTTPS: https://stackoverflow.com/questions/8023126/how-can-i-test-https-connections-with-django-as-easily-as-i-can-non-https-connec
 * Django sslserver package: https://github.com/teddziuba/django-sslserver
+* Talking to Oauth2.0 in Javascript: https://stormpath.com/blog/talking-to-oauth2-services-with-nodejs
 
 ---
 

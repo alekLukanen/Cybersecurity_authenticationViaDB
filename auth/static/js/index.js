@@ -44,83 +44,58 @@ $('.tab a').on('click', function (e) {
 
 ////////////////////////////////////////////////////////////
 
-export function postRequest(username, password){
-  var xhr = new XMLHttpRequest();
+var client_id = 'V2jR2iLiDW3irsLwdAHzetFn5r93MIHmHBe6td6f';
+var client_secret = 'XXoFJQsagJSvYbWqyjZAHEoFj6WAjJ4ykGrN27K752HQlF51yJdFJWqGguo1OnuoqKugcWqyRY22vTi7egPhrUuHd4cNLEmUydaj3Qp5slOlBbNpro4QuvrTLHbtmyfz';
 
-  xhr.open("POST", token_url, true);
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  xhr.setRequestHeader('Accept', 'application/JSON');
-  xhr.send(JSON.stringify({ username: password}));
+function get_token(){
+  username = document.getElementById('username').value;
+  password = document.getElementById('password').value;
 
-  xhr.onreadystatechange = function(){
-    if(this.readyState != 4) return;
+  console.log('username: ', username);
+  console.log('password: ', password);
 
-    if (this.status == 200){
-       var data = JSON.parse(this.responseText);  
-       console.log(data);
-    }
-  }
+  body_data = {
+    'username': username,
+    'password': password,
+    'client_id': client_id,
+    'client_secret': client_secret,
+    'grant_type': 'password'
+  };
+
+  console.log('body_data: ', body_data);
+  console.log('params: ', queryParams(body_data));
+
+  var data = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret),
+      'Host': 'localhost:8000'
+    },
+    body: queryParams(body_data)
+  };
+
+  fetch('/api/users/o/token/', data).then(function(res) {
+    return res.json();
+  }).then(function(resJson) {
+    console.log('resJson: ', resJson);
+    setCookie('access_token', resJson['access_token'], 1);
+    setCookie('refresh_token', resJson['refresh_token'], 1);
+    url_array = window.location.href.split('/');
+    hostname = url_array[0]+'//'+url_array[2]+'/content/profile.html'
+    window.location.replace(hostname);
+    return resJson;
+  });
 
 }
 
-////////////////////////////////////////////////////////////
+function queryParams(params) {
+  return Object.keys(params)
+      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+      .join('&');
+}
 
-
-$.ajax({
-  asynch: false,
-  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/o/token/" + username,
-  method: "GET",
-  headers: { "Athurization": ""},
-  success: function (data) {
-
-    for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
-      
-      if (data.d.UserProfileProperties.results[i].key === "FirstName") { firstName = data.d.UserProfileProperties.results[i].Value;}
-      if (data.d.UserProfileProperties.results[i].key === "LastName") { lastName = data.d.UserProfileProperties.results[i].Value;}
-      if (data.d.UserProfileProperties.results[i].key === "Email") { email = data.d.UserProfileProperties.results[i].Value;}
-
-    }
-  },
-
-  dataType: 'JSON',
-  data: JSON.stringify(application.JSON),
-
-  error: function(x, y, z){ 
-    alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
-  }  
-
-});
-
-$.ajax({
-  asynch: false,
-  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
-  method: "POST",
-  headers: { "Athurization": "postRequest()"}, 
-  success: function (data) {
-
-    for (var i = 0; i < data.d.UserProfileProperties.results.length; i++){
-      
-      if (data.d.UserProfileProperties.results[i].key === "FirstName") { firstName = data.d.UserProfileProperties.results[i].Value;}
-      if (data.d.UserProfileProperties.results[i].key === "LastName") { lastName = data.d.UserProfileProperties.results[i].Value;}
-      if (data.d.UserProfileProperties.results[i].key === "Email") { email = data.d.UserProfileProperties.results[i].Value;}
-
-    }
-  },
-  dataType: 'JSON',
-  data: {json:JSON.stringify(application.JSON)},
-  parsed_data: JSON.parse(data),
-
-  cookie: setCookie("access_data", data["access_token"],1),
-  cookie: setCookie("refresh_data", data["refresh_token"],1),
-
-  error: function(x, y, z){ 
-    alert(JSON.stringify(x) + JSON.stringify(y) + JSON.stringify(z));
-  }  
-
-});
- 
-////////////////////////////////////////////////////////////
-
+//https://www.w3schools.com/js/js_cookies.asp //////////////
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -143,7 +118,7 @@ function getCookie(cname) {
   }
   return "";
 }
-
+////////////////////////////////////////////////////////////
 
 function doesCookieExist(cookieName){
   str = getCookie(cookieName);
@@ -152,15 +127,4 @@ function doesCookieExist(cookieName){
   }else{
       return false;
   }
-}
-
-/////////////////////////////////////////////////////////////
-
-function ifAdmin(admin_status){
-
-    if(admin_status == true){
-      print
-
-    };
-
 }

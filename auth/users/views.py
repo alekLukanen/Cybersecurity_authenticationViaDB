@@ -87,7 +87,7 @@ class ProfileSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     permission_classes = [
-        permissions.AllowAny  # Or anon users can't register
+        permissions.AllowAny
     ]
 
 

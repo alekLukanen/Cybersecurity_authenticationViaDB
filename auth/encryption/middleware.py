@@ -91,7 +91,9 @@ class EncryptionMiddleware(object):
         print('- request.method: ', request.method)
         print('- request.path: ', request.path)
         print('- request.META["CONTENT_TYPE"]: ', request.META["CONTENT_TYPE"])
+        print('- request.POST: ', request.POST)
 
+        '''
         # process requests
         if (request.method=='GET'):
             self.process_get_request(request)
@@ -122,7 +124,10 @@ class EncryptionMiddleware(object):
         #    (request.META["CONTENT_TYPE"]=='text/plain' and response["Content-Type"]=='application/json')):
         #    print('- response.content: ', response.content)
         #    response.content = self.encrypt_response_data(request, response).encode()
-            
+        '''
 
+        response = self.get_response(request)
+        print('- response["Content-Type"]: ', response["Content-Type"])
+        print('- response.content: ', response.content)
         print('----------------------------------------')
         return response
