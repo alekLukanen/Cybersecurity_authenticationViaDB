@@ -68,7 +68,7 @@ export function postRequest(username, password){
 
 $.ajax({
   asynch: false,
-  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/myprofile/" + username,
+  url: location.protocol + "//" + location.host + "/http://127.0.0.1:8000/api/users/o/token/" + username,
   method: "GET",
   headers: { "Athurization": ""},
   success: function (data) {
