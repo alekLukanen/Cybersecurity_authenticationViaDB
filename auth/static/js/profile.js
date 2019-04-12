@@ -9,11 +9,25 @@ var data = {
   };
 
   fetch('/api/users/myprofile/', data).then(function(res) {
-    return res.json();
+    if (res.ok){
+        return res.json();
+    }else{
+        console.log('was not authenticated');
+        return res.json();
+    }
   }).then(function(resJson) {
     console.log('resJson: ', resJson);
-    document.getElementById('name').innerHTML = resJson['firstName'] + " " + resJson['lastName'];
-    document.getElementById('email').innerHTML = resJson['owner']['email'];
+    if (!('detail' in resJson)){
+        document.getElementById('name').innerHTML = resJson['firstName'] + " " + resJson['lastName'];
+        document.getElementById('email').innerHTML = resJson['owner']['email'];
+        if (resJson['owner']['is_staff']==true){
+            document.getElementById('user-title').innerHTML = 'Staff/Admin User';
+        }else{
+            document.getElementById('user-title').innerHTML = 'Normal User';
+        }
+    }else{
+        document.getElementById('user-title').innerHTML = 'Not Authenticated';
+    }
     return resJson;
   });
 

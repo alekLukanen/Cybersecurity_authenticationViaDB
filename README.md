@@ -3,12 +3,6 @@ Here is a simple project that setups a database with a few
 users and allows a client to interact with the database with
 a web interface. There is a login page and a profile page.
 
-Links (http or https):
-
-* http://127.0.0.1:8000/content/index.html
-* http://127.0.0.1:8000/content/profile.html
-
-
 ## Build the Development Environment
 To create your python environment simply run
 ```
@@ -36,13 +30,27 @@ https mode
 python auth/manage.py runsslserver
 ```
 
+## How to Login
 
-## What Needs to Work
+Go to the `index.html` page in either http or https mode and
+login with eihter of the following logins. You will then be redirected
+to the user's profile page. The profile page will change based on is 
+staff. 
 
-* Login/Register page (index.html)
-* Profile page (profile.html)
-* Public key cryptography to encrypt username and password
-* Admin accounts
+| Username | Password | Is Staff |
+|---        |---        |---        |
+| bob   | passmass123   | false |
+| admin  | passmass123  | true |
+
+HTTP Links:
+
+* http://127.0.0.1:8000/content/index.html
+* http://127.0.0.1:8000/content/profile.html
+
+HTTPS Links:
+
+* https://127.0.0.1:8000/content/index.html
+* https://127.0.0.1:8000/content/profile.html
 
 
 ## Helpful Curl Commands

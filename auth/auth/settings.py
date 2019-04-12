@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # ------ my apps ------
     'users.apps.UsersConfig',
     'siteSettings.apps.SitesettingsConfig',
-    'encryption.apps.EncryptionConfig',
+    #'encryption.apps.EncryptionConfig',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # ------ my middleware ------
-    'encryption.middleware.EncryptionMiddleware',
+    #'encryption.middleware.EncryptionMiddleware',
 ]
 
 ROOT_URLCONF = 'auth.urls'
