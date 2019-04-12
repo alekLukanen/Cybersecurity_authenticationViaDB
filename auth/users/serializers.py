@@ -23,17 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        # Tuple of serialized model fields (see link [2])
-        # the following fields are required
-        fields = ("username", "password", "email", )
-
-
-class JustNameUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserModel
-        fields = ("username", )
-        read_only_fields = ("username", "email", )
-        write_only_fields = ("password", )
+        # Tuple of serialized model fields. These fields will
+        #be included in the json representation.
+        fields = ("username", "password", "email", "is_staff", )
 
 
 class ProfileSerializer(serializers.Serializer):
@@ -55,3 +47,12 @@ class ProfileSerializer(serializers.Serializer):
         instance.lastName = validate_data.get('lastName', instance.lastName)
         instance.save()
         return instance
+
+'''
+class JustNameUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ("username", )
+        read_only_fields = ("username", "email", )
+        write_only_fields = ("password", )
+'''
